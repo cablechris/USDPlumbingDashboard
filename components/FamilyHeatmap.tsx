@@ -1,4 +1,4 @@
-import { Metric } from '@/hooks/useSignals';
+import type { Metric } from '@/types/signals';
 
 interface Props {
   metrics: Metric[];
