@@ -9,7 +9,8 @@ export type Metric = {
 
 export type SignalsResponse = {
   metrics: Metric[];
-  move: number;
-  repoSpread: number;
-  lastUpdated: string;
+  date: string;
+  red_count: number;
+  amber_count: number;
+  move: { value: number; status: 'green' | 'amber' | 'red' };
 }; 

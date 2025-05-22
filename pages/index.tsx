@@ -16,7 +16,7 @@ export default function Home() {
 
   const move = signals.metrics.find((m) => m.id === 'move');
   // Replace [] with your real net liquidity data if available
-  const netLiquiditySeries = [];
+  const netLiquiditySeries: number[] = [];
 
   // Example: Calculate pivot probability (replace with your real logic)
   const pivotProb = Number((signals.red_count / 10).toFixed(2));
