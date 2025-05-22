@@ -1,0 +1,20 @@
+{
+  "move": {
+    "description": "MOVE index threshold for market volatility.",
+    "green": 80,
+    "amber": 120,
+    "direction": "ceiling",
+    "history": [
+      { "date": "2022-03-01", "event": "MOVE spike due to Fed announcement" }
+    ]
+  },
+  "repo_spread": {
+    "description": "Repo spread threshold for liquidity stress.",
+    "green": 0.1,
+    "amber": 0.25,
+    "direction": "ceiling",
+    "history": [
+      { "date": "2023-01-15", "event": "Repo spread widened on market stress" }
+    ]
+  }
+} 
