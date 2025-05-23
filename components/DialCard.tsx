@@ -2,7 +2,7 @@ import StatusIcon from "./StatusIcon";
 import SparkSVG from "./SparkSVG";
 import clsx from "clsx";
 
-type Status = "green" | "amber" | "red" | "stale";
+export type Status = "green" | "amber" | "red" | "stale";
 export interface DialMetric {
   id: string;
   label: string;
