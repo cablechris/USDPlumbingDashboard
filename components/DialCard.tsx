@@ -20,7 +20,9 @@ export default function DialCard({ metric }: DialCardProps) {
       
       <div className="mt-4">
         <p className="text-3xl font-mono font-bold text-white tabular-nums">
-          {metric.value.toFixed(2)}
+          {typeof metric.value === 'number' && !isNaN(metric.value)
+            ? metric.value.toFixed(2)
+            : 'N/A'}
         </p>
         <p className="mt-2 text-sm text-neutral-400">{metric.description}</p>
       </div>
