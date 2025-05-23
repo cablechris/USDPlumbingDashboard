@@ -42,27 +42,16 @@ async function fetchRRPUsage(): Promise<number> {
 
 async function fetchTIPSBreakeven(): Promise<number> {
   try {
-    if (!process.env.FRED_API_KEY) {
-      throw new Error('FRED API key is not configured');
-    }
-
-    const response = await axios.get('https://api.fred.stlouisfed.org/series/observations', {
-      params: {
-        series_id: 'T5YIE',
-        api_key: process.env.FRED_API_KEY,
-        file_type: 'json',
-        sort_order: 'desc',
-        limit: 1
-      }
-    });
-
-    if (!response.data.observations?.[0]?.value) {
-      throw new Error('No TIPS data available');
-    }
-
-    return parseFloat(response.data.observations[0].value);
+    // Fetch from the local API route that pulls from GitHub
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SIGNALS_URL || ''}/api/fred-data`);
+    if (!response.ok) throw new Error('Failed to fetch fred-data.json');
+    const data = await response.json();
+    // Adjust this path if your JSON structure is different
+    const value = data.observations?.[0]?.value;
+    if (!value) throw new Error('No TIPS data available');
+    return parseFloat(value);
   } catch (error) {
-    console.error('Error fetching TIPS Breakeven:', error);
+    console.error('Error fetching TIPS Breakeven from GitHub:', error);
     throw new Error('Failed to fetch TIPS Breakeven');
   }
 }
