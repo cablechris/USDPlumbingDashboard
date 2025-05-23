@@ -42,7 +42,7 @@ async function fetchRRPUsage(): Promise<number> {
 
 async function fetchTIPSBreakeven(): Promise<number> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_SIGNALS_URL || ''}/api/fred-data`;
+    const url = 'https://usd-plumbing-dashboard.vercel.app/api/fred-data';
     console.log('Fetching TIPS Breakeven from:', url);
     const response = await fetch(url);
     console.log('fred-data fetch status:', response.status);
