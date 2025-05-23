@@ -1,14 +1,23 @@
 {
   "metrics": [
     {
-      "id": "on_rrp",
-      "name": "ON-RRP",
-      "description": "Cash parked overnight by MMFs at the Fed—think of it as the system's relief valve.",
-      "thresholds": { "green": "400", "amber": "100", "red": "100", "unit": "B" },
+      "id": "ON_RRP",
+      "description": "Cash parked overnight by money-market funds; fast outflow signals liquidity leaving the Fed.",
+      "unit": "B",
+      "ranges": { "greenMin": 400, "greenMax": 4000, "amberMin": 100, "amberMax": 400, "redMin": 0, "redMax": 100 },
       "history": [
-        {"date": "2019-09-18", "event": "Fed launched overnight & term repo ops"},
-        {"date": "2020-03-09", "event": "Fed cut rates 50 bp & relaunched QE"},
-        {"date": "2023-03-10", "event": "BTFP facility unveiled (SVB)"}
+        { "date": "2019-09-18", "event": "Fed launched o/n & term repo ops" },
+        { "date": "2020-03-11", "event": "QE-4 announced" },
+        { "date": "2023-03-10", "event": "BTFP facility unveiled (SVB)" }
+      ]
+    },
+    {
+      "id": "RESERVES",
+      "description": "Commercial-bank deposits at the Fed; low levels tighten bank funding.",
+      "unit": "B",
+      "ranges": { "greenMin": 3000, "greenMax": 8000, "amberMin": 2500, "amberMax": 3000, "redMin": 0, "redMax": 2500 },
+      "history": [
+        { "date": "2019-09-17", "event": "Repo turmoil – reserves < 1.4 T" }
       ]
     }
   ]

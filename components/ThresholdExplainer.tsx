@@ -1,53 +1,63 @@
-import { useEffect, useState } from 'react';
-
-type Threshold = {
-  description: string;
-  green: number;
-  amber: number;
-  direction: 'ceiling' | 'floor';
-  history?: { date: string; event: string }[];
-};
-
-type Thresholds = Record<string, Threshold>;
+import { useState } from "react";
+import thresholds from "@/content/thresholds.json";
+import { metricDefs } from "@/constants/metrics";
+import ThresholdBar from "./ThresholdBar";
+import { ChevronDown } from "lucide-react";
 
 export default function ThresholdExplainer() {
+  const [openId, setOpenId] = useState<string | null>(null);
+
   return (
-    <div className="mt-8 mx-auto max-w-4xl px-4">
-      <div className="rounded-lg bg-neutral-800 p-6 shadow-lg">
-        <h2 className="text-xl font-semibold text-white mb-4">Threshold Guide</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-lg bg-neutral-700">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-3 w-3 rounded-full bg-status-green" />
-              <h3 className="font-semibold text-white">Green</h3>
-            </div>
-            <p className="text-sm text-neutral-300">
-              Normal operating conditions. All metrics within expected ranges.
-            </p>
-          </div>
+    <section id="explainer" className="space-y-4">
+      <h2 className="text-xl font-semibold text-slate-200">
+        Why these colours?
+      </h2>
 
-          <div className="p-4 rounded-lg bg-neutral-700">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-3 w-3 rounded-full bg-status-amber" />
-              <h3 className="font-semibold text-white">Amber</h3>
-            </div>
-            <p className="text-sm text-neutral-300">
-              Warning conditions. Some metrics approaching concerning levels.
-            </p>
-          </div>
+      {metricDefs.map((def) => {
+        const meta = thresholds.metrics.find((m) => m.id === def.id);
+        if (!meta) return null;
 
-          <div className="p-4 rounded-lg bg-neutral-700">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-3 w-3 rounded-full bg-status-red" />
-              <h3 className="font-semibold text-white">Red</h3>
-            </div>
-            <p className="text-sm text-neutral-300">
-              Critical conditions. Immediate attention required.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+        const open = openId === def.id;
+
+        return (
+          <article key={def.id}
+                   className="rounded-md border border-slate-700 bg-slate-800">
+            {/* header */}
+            <button
+              className="flex w-full items-center justify-between px-4 py-2 text-left"
+              onClick={() => setOpenId(open ? null : def.id)}
+            >
+              <span className="font-medium text-slate-100">
+                {def.label} — <span className="text-slate-400">{def.unit}</span>
+              </span>
+              <ChevronDown size={18}
+                           className={`transition-transform ${open ? "rotate-180" : ""}`} />
+            </button>
+
+            {open && (
+              <div className="space-y-4 px-4 pb-4 text-sm text-slate-300">
+                <p>{meta.description}</p>
+
+                <ThresholdBar r={meta.ranges} />
+
+                <table className="mt-2 w-full text-xs">
+                  <thead className="text-slate-400">
+                    <tr><th className="w-24 text-left">Date</th>
+                        <th className="text-left">Follow-on event (≤ 14 d)</th></tr>
+                  </thead>
+                  <tbody>
+                    {meta.history.map((h) => (
+                      <tr key={h.date}>
+                        <td>{h.date}</td><td>{h.event}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </section>
   );
 } 
