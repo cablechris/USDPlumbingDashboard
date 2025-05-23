@@ -42,14 +42,22 @@ async function fetchRRPUsage(): Promise<number> {
 
 async function fetchTIPSBreakeven(): Promise<number> {
   try {
-    // Fetch from the local API route that pulls from GitHub
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SIGNALS_URL || ''}/api/fred-data`);
+    const url = `${process.env.NEXT_PUBLIC_SIGNALS_URL || ''}/api/fred-data`;
+    console.log('Fetching TIPS Breakeven from:', url);
+    const response = await fetch(url);
+    console.log('fred-data fetch status:', response.status);
     if (!response.ok) throw new Error('Failed to fetch fred-data.json');
     const data = await response.json();
-    // Adjust this path if your JSON structure is different
-    const value = data.observations?.[0]?.value;
-    if (!value) throw new Error('No TIPS data available');
-    return parseFloat(value);
+    console.log('fred-data.json received:', JSON.stringify(data, null, 2));
+    if (!data.observations || !Array.isArray(data.observations)) {
+      throw new Error('fred-data.json missing observations array');
+    }
+    const latest = data.observations.find((obs: any) => obs.value && !isNaN(parseFloat(obs.value)));
+    console.log('Latest valid TIPS Breakeven observation:', latest);
+    if (!latest) {
+      throw new Error('No valid TIPS Breakeven value found');
+    }
+    return parseFloat(latest.value);
   } catch (error) {
     console.error('Error fetching TIPS Breakeven from GitHub:', error);
     throw new Error('Failed to fetch TIPS Breakeven');
