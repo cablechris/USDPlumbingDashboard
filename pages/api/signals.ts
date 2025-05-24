@@ -93,7 +93,7 @@ export default async function handler(
 
     const metrics: Metric[] = [
       {
-        id: 'fed-funds',
+        id: 'ON_RRP',
         title: 'Fed Funds Rate',
         value: fedFundsRate,
         status: getStatus(fedFundsRate, { green: 5.0, amber: 5.5 }),
@@ -101,7 +101,7 @@ export default async function handler(
         lastUpdated: new Date().toISOString(),
       },
       {
-        id: 'rrp',
+        id: 'RESERVES',
         title: 'RRP Facility Usage',
         value: rrpUsage,
         status: getStatus(rrpUsage, { green: 500, amber: 700 }),
@@ -109,7 +109,7 @@ export default async function handler(
         lastUpdated: new Date().toISOString(),
       },
       {
-        id: 'tips',
+        id: 'MOVE',
         title: '5Y TIPS Breakeven',
         value: tipsBreakeven,
         status: getStatus(tipsBreakeven, { green: 2.5, amber: 3.0 }),
